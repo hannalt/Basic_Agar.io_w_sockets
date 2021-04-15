@@ -68,11 +68,9 @@ function draw() {
     //Loop deals with other blobs
     for (let i = blobs.length-1; i >= 0; i--) {
         let id = blobs[i].id;
-        //This is how you avoid drawing yourself.
+        //This is how you avoid drawing/eating yourself.
         if (id != socket.id){
-
             //This checks if blob has eaten blob[i] 
-            //*********THIS IS WORKING FOR NON SOCKET OTHER BLOBS BUT NOT FOR SOCKET BLOBS*******************/
             if (blob.eats(blobs[i])){
                 console.log(blobs[i]);
                 let eaten = {

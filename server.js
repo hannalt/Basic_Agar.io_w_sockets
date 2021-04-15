@@ -12,7 +12,9 @@ function random(min, max){
 
     if (min == 0){
         return val;
-    } else {
+    } else if (min == 1){
+        return val + 1;
+    }else {
         if (Math.round(Math.random())) {
             return val;
         } else {
@@ -24,7 +26,7 @@ function random(min, max){
 
 //Makes 200 non user blobs that should be the starter food.
 for (let i = 0; i < 200; i++) {
-    blobs[i] = new Blob(random(-600, 600), random(-600, 600), i, random(0,5), random(0,255), random(0,255), random(0,255), "no user");
+    blobs[i] = new Blob(random(-600, 600), random(-600, 600), i, random(1,5), random(0,255), random(0,255), random(0,255), "no user");
 }
 
 //defintion of the Blob class for the server
@@ -96,8 +98,6 @@ function newConnection(socket) {
             for(let i = 0; i < blobs.length; i++) {
                 if (data.eaten.id == blobs[i].id) {
                     //tell blob it has been eaten 
-                    /* ***** THIS IS THE PART I THINK IS BROKEN SINCE IT IS THE SOCKET
-                    SPECIFIC PART */
                     let socket_id;
                     if (!((data.eaten.id >= 0) && (data.eaten.id <200) )) {
                         socket_id = data.eaten.id;
@@ -111,13 +111,11 @@ function newConnection(socket) {
                     let r;
                     let name;
                     if ((data.eaten.id >= 0) && (data.eaten.id <200) ) {
-                        r = random(0,5);
+                        r = random(1,5);
                         name = "no user";
-                    } else {
-                        r = 10;
-                        name = "needsAName";
+                        blobs.push(new Blob(random(-600,600),random(-600,600), data.eaten.id, r,random(0,255), random(0,255), random(0,255),name ))
                     }
-                    blobs.push(new Blob(random(-600,600),random(-600,600), data.eaten.id, r,random(0,255), random(0,255), random(0,255),name ))
+                    
                 }
             }
         }

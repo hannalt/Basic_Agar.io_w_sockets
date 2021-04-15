@@ -36,9 +36,6 @@ function Blob(r, x, y) {
     }
 
     //https://www.youtube.com/watch?v=JXuxYMGe4KI
-    /* ***********THIS IS THE EAT FUNCTION IT WORKS WELL WITH THE NON SOCKET BLOBS, 
-    IT SEEMS TO WORK FOR JUST A MOMENT WITH SOCKET BLOBS, BUT THEN IT BREAKS DOWN 
-    AND EVERYTHING DISAPPEARS ***************** */
     this.eats = function(other) {
         //This is the distance formal
         let d = sqrt(((other.x - this.pos.x)**2)+((other.y-this.pos.y)**2))
