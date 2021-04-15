@@ -1,0 +1,17 @@
+{
+  "name": "final_project",
+  "version": "1.0.0",
+  "description": "final project for comp 426",
+  "main": "index.js",
+  "author": "Hanna",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "keypress": "^0.2.1",
+    "socket.io": "^4.0.1"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "devDependencies": {}
+}
