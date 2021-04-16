@@ -7,6 +7,8 @@ function Blob(r, x, y) {
     this.blue = Math.round(Math.random() * 255);
     this.green = Math.round(Math.random() * 255);
     this.name = "needsAName"
+    this.alive = true;
+    this.winner = false;
     
     //https://www.youtube.com/watch?v=JXuxYMGe4KI
     //This prints the blob

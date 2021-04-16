@@ -1,9 +1,11 @@
 //to run node server.js in terminal then go to localhost::3000 
 // This server code was created by watching Web Sockets and p5.js Tutoral from The Coding Train on Youtube 
+// You win if you are the last blob alive. You lose if you get eaten.
 
 //type = module was messing up require
 
-var blobs = [];
+let blobs = [];
+let dumb_num = 200;
 
 //min must be -max or 0;
 //my own random function to create more functionality.
@@ -25,7 +27,7 @@ function random(min, max){
 }
 
 //Makes 200 non user blobs that should be the starter food.
-for (let i = 0; i < 200; i++) {
+for (let i = 0; i < dumb_num; i++) {
     blobs[i] = new Blob(random(-600, 600), random(-600, 600), i, random(1,5), random(0,255), random(0,255), random(0,255), "no user");
 }
 
@@ -57,10 +59,15 @@ function heartbeat(){
     io.sockets.emit('heartbeat', blobs);
 }
 
+setInterval(checkWinner, 40000)
+function checkWinner(){
+    if (blobs.length == dumb_num + 1){
+        io.sockets.emit('winner', blobs);
+    }
+}
+
 //This sets up what a new connection to a new socket should look like
 function newConnection(socket) {
-    console.log("new connection: " + socket.id);
-    
     //This is recieving the message sent by the client
     //This makes a new blob and puts it at the blobs array
     socket.on('start', 
@@ -84,35 +91,33 @@ function newConnection(socket) {
                     blob = blobs[i];
                 }
             }
-            blob.x = data.x;
-            blob.y = data.y;
-            blob.r = data.r;
+            console.log(data);
+            if (!(blob === undefined)){
+                blob.x = data.x;
+                blob.y = data.y;
+                blob.r = data.r;
+            }
+            
         }
     )
     //wrote this entirely on my own!!!!!
-    /* *********   THIS DOESN'T SEEM TO BE WORKING. IT WORKS FOR NON SOCKET/USER
-    BLOBS BUT NOT USER/SOCKET BLOBS. 
-    */
     socket.on('eaten', 
         function(data){
             for(let i = 0; i < blobs.length; i++) {
                 if (data.eaten.id == blobs[i].id) {
+                    //remove blob from all blobs
+                    blobs.splice(i,1); 
+                    
                     //tell blob it has been eaten 
-                    let socket_id;
                     if (!((data.eaten.id >= 0) && (data.eaten.id <200) )) {
-                        socket_id = data.eaten.id;
+                        let socket_id = data.eaten.id;
                         io.to(socket_id).emit('eaten');
                     }
 
-                    //remove blob from all blobs
-                    blobs.splice(i,1); 
-
                     //make a new blob in its place somewhere random
-                    let r;
-                    let name;
                     if ((data.eaten.id >= 0) && (data.eaten.id <200) ) {
-                        r = random(1,5);
-                        name = "no user";
+                        let r = random(1,5);
+                        let name = "no user";
                         blobs.push(new Blob(random(-600,600),random(-600,600), data.eaten.id, r,random(0,255), random(0,255), random(0,255),name ))
                     }
                     
@@ -120,12 +125,9 @@ function newConnection(socket) {
             }
         }
     );
-    
 }
 
 io.sockets.on('connection', newConnection);
-console.log("My socket server is running")
-
 
 
    
