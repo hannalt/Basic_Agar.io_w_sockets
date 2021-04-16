@@ -91,7 +91,7 @@ function newConnection(socket) {
                     blob = blobs[i];
                 }
             }
-            console.log(data);
+            
             if (!(blob === undefined)){
                 blob.x = data.x;
                 blob.y = data.y;
@@ -125,6 +125,18 @@ function newConnection(socket) {
             }
         }
     );
+
+    socket.on('disconnect',
+        function() {
+            for(let i = 0; i < blobs.length; i++) {
+                if (socket.id == blobs[i].id) {
+                    //remove blob from all blobs
+                    blobs.splice(i,1); 
+                }
+            }
+        }
+    )
+
 }
 
 io.sockets.on('connection', newConnection);

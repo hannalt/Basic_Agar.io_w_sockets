@@ -6,11 +6,7 @@ let blobs = [];
 let zoom = 1; 
 let socket;
 let id;
-
-//TO DO:
-//Win and lose conditions
-//If someone disconnects make them disappear.
-
+//I did use a tutorial for some of these functions, but I did do a lot of work on them and added to them. If you want to see what I added to you look at the videos that I cited to see what was taught to me.
 //Created this function watching: https://www.youtube.com/watch?v=JXuxYMGe4KI
 function setup() {
     //change these items to make it dynamic for the screen
@@ -44,7 +40,6 @@ function setup() {
     //It should just be a block on the screen saying "You Lose"
     socket.on('eaten',
         function() {
-            console.log(blob)
             blob.alive = false;
         }
     )
